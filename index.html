@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Kuis UAS Bahasa Indonesia</title>
+<style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { text-align: center; }
+    .question { margin-bottom: 20px; padding: 12px; border: 1px solid #ccc; border-radius: 8px; }
+    #timer { font-size: 22px; color: red; text-align:center; margin: 20px 0; }
+    button { padding: 12px 20px; font-size: 16px; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<h1>Kuis UAS Bahasa Indonesia</h1>
+<div id="timer">Waktu: 20:00</div>
+
+<form id="quizForm">
+
+<script>
+// LIST SOAL 20 (VERSI PILIHAN GANDA)
+const questions = [
+    {q:"1. Yang merupakan kalimat transitif adalah…", a:{A:"Kakak tidur", B:"Ibu memasak nasi", C:"Ayah pergi", D:"Adi duduk"}, correct:"B"},
+    {q:"2. Unsur S pada SPOK adalah…", a:{A:"Subjek", B:"Suara", C:"Sumber", D:"Sambung"}, correct:"A"},
+    {q:"3. Contoh kata homonim adalah…", a:{A:"Bisa (racun) – bisa (dapat)", B:"Lari – berlari", C:"Kera – kerak", D:"Dua – dua"}, correct:"A"},
+    {q:"4. Bentuk awalan me- yang tepat untuk kata 'pakai' adalah…", a:{A:"memakai", B:"menpakai", C:"mepakai", D:"memakaih"}, correct:"A"},
+    {q:"5. Awalan ber- yang benar adalah…", a:{A:"bermain", B:"bemain", C:"bermainin", D:"bermainan"}, correct:"A"},
+    {q:"6. Pertanyaan Adiksimba menanyakan…", a:{A:"Sifat", B:"Tujuan", C:"Tempat", D:"Jumlah"}, correct:"C"},
+    {q:"7. Arti rambu lingkaran merah adalah…", a:{A:"Peringatan", B:"Wajib", C:"Larangan", D:"Petunjuk"}, correct:"C"},
+    {q:"8. Mata angin yang berlawanan dengan timur adalah…", a:{A:"Barat", B:"Utara", C:"Selatan", D:"Timur laut"}, correct:"A"},
+    {q:"9. Poster yang baik bersifat…", a:{A:"Singkat dan menarik", B:"Panjang dan rumit", C:"Tanpa gambar", D:"Tanpa warna"}, correct:"A"},
+    {q:"10. Ide pokok adalah…", a:{A:"Inti paragraf", B:"Kalimat contoh", C:"Judul bacaan", D:"Kesimpulan"}, correct:"A"},
+    {q:"11. Kalimat transitif memerlukan…", a:{A:"Objek", B:"Keterangan", C:"Subjek saja", D:"Predikat saja"}, correct:"A"},
+    {q:"12. Pada SPOK, unsur K berarti…", a:{A:"Keterangan", B:"Kerangka", C:"Kalimat", D:"Kata"}, correct:"A"},
+    {q:"13. 'Bulan' (langit) dan 'bulan' (waktu) adalah contoh…", a:{A:"Homonim", B:"Sinonim", C:"Antonim", D:"Hiperbola"}, correct:"A"},
+    {q:"14. Awalan me- untuk kata 'tulis' adalah…", a:{A:"menulis", B:"metulis", C:"memtulis", D:"menutulis"}, correct:"A"},
+    {q:"15. Kata berawalan ber- untuk 'jalan' adalah…", a:{A:"berjalan", B:"bejalan", C:"berjalani", D:"berjalah"}, correct:"A"},
+    {q:"16. Contoh pertanyaan 'dari mana' termasuk Adiksimba unsur…", a:{A:"Asal", B:"Benda", C:"Alasan", D:"Cara"}, correct:"A"},
+    {q:"17. Rambu segitiga merah berfungsi untuk…", a:{A:"Peringatan", B:"Larangan", C:"Wajib", D:"Informasi"}, correct:"A"},
+    {q:"18. Mata angin yang letaknya di antara utara dan timur adalah…", a:{A:"Timur laut", B:"Barat daya", C:"Selatan", D:"Barat laut"}, correct:"A"},
+    {q:"19. Poster harus memuat…", a:{A:"Gambar & pesan singkat", B:"Paragraf panjang", C:"Tabel", D:"Cerita"}, correct:"A"},
+    {q:"20. Ide pokok biasanya berada di…", a:{A:"Kalimat utama", B:"Kalimat penjelas", C:"Judul", D:"Ilustrasi"}, correct:"A"},
+];
+
+// BUAT SOAL DI HALAMAN
+let html = "";
+questions.forEach((item, i) => {
+    html += `<div class='question'><p>${item.q}</p>`;
+    for(const key in item.a){
+        html += `<label><input type='radio' name='q${i}' value='${key}'> ${key}. ${item.a[key]}</label><br>`;
+    }
+    html += "</div>";
+});
+document.write(html);
+</script>
+
+<button type="button" onclick="submitQuiz()">Selesai</button>
+</form>
+
+<div id="result" style="font-size:20px;margin-top:20px;font-weight:bold;"></div>
+
+
+<script>
+// HITUNG NILAI
+function submitQuiz() {
+    let score = 0;
+    questions.forEach((q, i)=>{
+        const ans = document.querySelector(`input[name='q${i}']:checked`);
+        if(ans && ans.value === q.correct) score++;
+    });
+    document.getElementById("result").innerHTML = 
+        "Nilai kamu: " + (score/questions.length*100).toFixed(0);
+    clearInterval(timerInterval);
+}
+
+// TIMER 20 MENIT
+let timeLeft = 1200; 
+const timerDisplay = document.getElementById("timer");
+const timerInterval = setInterval(()=>{
+    timeLeft--;
+    const m = Math.floor(timeLeft/60);
+    const s = timeLeft%60;
+    timerDisplay.textContent = `Waktu: ${m}:${s.toString().padStart(2,'0')}`;
+
+    if(timeLeft <= 0){
+        clearInterval(timerInterval);
+        submitQuiz();
+        timerDisplay.textContent = "Waktu habis!";
+    }
+}, 1000);
+</script>
+
+</body>
+</html>
